@@ -1,0 +1,25 @@
+appId: "org.consensio.whisper"
+tags:
+    - DoNotRun
+---
+
+# אם יש הודעה קולית שלא נשלחה
+
+# - runFlow: # אם יש הודעה קולית שלא נשלחה
+#     when:
+#       visible:
+#         id: "org.consensio.whisper:id/voice_note_draft_delete"
+#     commands:
+#         - runFlow: if_voice_note.yaml
+
+
+
+- assertVisible: "Play … Pause"
+- assertVisible:
+    id: "org.consensio.whisper:id/seek"
+- tapOn:
+    id: "org.consensio.whisper:id/voice_note_draft_delete"
+- assertVisible: "Signal message"
+- assertVisible:
+    id: "org.consensio.whisper:id/embedded_text_editor"
+

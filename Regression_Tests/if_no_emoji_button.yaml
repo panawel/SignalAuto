@@ -1,0 +1,22 @@
+appId: "org.consensio.whisper"
+tags:
+    - DoNotRun
+---
+
+# אם אין כפתור אימוגים
+
+# - runFlow: # אם אין כפתור אימוגים 
+#     when:
+#       notVisible:
+#         id: "org.consensio.whisper:id/emoji_toggle"
+#     commands:
+#         - runFlow: if_no_emoji_button.yaml
+
+
+- launchApp
+- tapOn: "More options"
+- tapOn: "Settings"
+- tapOn: "Chats"
+- tapOn:
+    id: "org.consensio.whisper:id/switch_widget"
+    index: 3

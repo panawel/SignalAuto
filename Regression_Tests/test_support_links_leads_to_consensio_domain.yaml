@@ -1,0 +1,154 @@
+appId: "org.consensio.whisper"
+
+name: support_links_leads_to_consensio_domain
+---
+# בדיקת לינקים חיצוניים
+
+#---------------------------if-----------------------------
+- runFlow: # אם המסך נכבה
+    when:
+      visible:
+        id: "com.android.systemui:id/lock_icon_container"
+    commands:
+        - runFlow: if_screen_off.yaml
+- runFlow: # אם חלון התראות מוצג מעל
+    when:
+      visible:
+            text: "Bluetooth"
+    commands:
+        - runFlow: if_notification_center.yaml
+- runFlow: # אם 3 כפתורי ניווט
+    when:
+      visible:
+        id: "com.android.systemui:id/recent_apps"
+    commands:
+        - runFlow: if_navigation_to_gesture.yaml
+- launchApp
+- runFlow: # אם סיגנל לא מחובר לחשבון
+    when:
+      visible:
+        id: "org.consensio.whisper:id/welcome_transfer_or_restore"
+    commands:
+        - runFlow: test_log_in_account_PIN_code.yaml
+        - launchApp
+- runFlow: # אם סיגנל נעול עם קוד
+    when:
+      visible:
+        id: "com.android.systemui:id/lockPassword"
+    commands:
+        - runFlow: if_signal_screen_lock.yaml
+- runFlow: # אם הממשק לא באנגלית
+    when:
+      notVisible: "Chats"
+    commands:
+        - runFlow: if_gui_not_english.yaml
+        - launchApp
+#--------------------------------------------------------------
+- tapOn: "More options"
+- tapOn: "Settings"
+- tapOn: "Help"
+- tapOn: "Support center"
+- runFlow: # אם דפדפן כרום מהחנות נפתח
+    when:
+      visible:
+        id: "com.android.chrome:id/home_button"
+    commands:
+        - assertVisible:
+            text: "support.consensio.cc"
+            index: 0
+- runFlow: # אם דפדפן כרום המובנה נפתח
+    when:
+      visible:
+        id: "org.lineageos.jelly:id/toolbar_search_bar"
+    commands:
+        - tapOn:
+            id: "org.lineageos.jelly:id/url_bar"
+        - assertVisible: "https://support.consensio.cc/"
+- back
+- tapOn: "Contact us"
+- assertVisible: "Help"
+- assertVisible:
+    id: "org.consensio.whisper:id/button"
+- tapOn:
+    id: "org.consensio.whisper:id/help_fragment_faq"
+- runFlow: # אם דפדפן כרום מהחנות נפתח
+    when:
+      visible:
+        id: "com.android.chrome:id/home_button"
+    commands:
+        - assertVisible:
+            text: "support.consensio.cc"
+            index: 0
+- runFlow: # אם דפדפן כרום המובנה נפתח
+    when:
+      visible:
+        id: "org.lineageos.jelly:id/toolbar_search_bar"
+    commands:
+        - tapOn:
+            id: "org.lineageos.jelly:id/url_bar"
+        - assertVisible: "https://support.consensio.cc/"
+- back
+- back
+- tapOn: "Terms & Privacy Policy"
+- runFlow: # אם דפדפן כרום מהחנות נפתח
+    when:
+      visible:
+        id: "com.android.chrome:id/home_button"
+    commands:
+        - assertVisible: "Signal Terms & Privacy Policy"
+        - assertVisible: "signal.org/legal/"
+- runFlow: # אם דפדפן כרום המובנה נפתח
+    when:
+      visible:
+        id: "org.lineageos.jelly:id/toolbar_search_bar"
+    commands:
+        - tapOn:
+            id: "org.lineageos.jelly:id/url_bar"
+        - assertVisible:
+            text: "https://signal.org/legal/"
+            index: 0
+- back
+- back
+- tapOn: "Privacy"
+- runFlow:
+    when:
+      notVisible:
+        text: "Signal messages and calls, always relay calls, and sealed sender"
+    commands:
+        - scrollUntilVisible:
+            element:
+              text: "Signal messages and calls, always relay calls, and sealed sender" # or any other selector
+            direction: DOWN # DOWN|UP|LEFT|RIGHT (optional, default: DOWN)
+            timeout: 50000 # (optional, default: 20000) ms
+            speed: 40 # 0-100 (optional, default: 40) Scroll speed. Higher values scroll faster.
+            visibilityPercentage: 100 # 0-100 (optional, default: 100) Percentage of element visible in viewport
+            centerElement: false # true|false (optional, default: false)
+- tapOn: "Advanced"
+- runFlow:
+    when:
+      notVisible:
+        text: "Learn more"
+    commands:
+        - scrollUntilVisible:
+            element:
+              text: "Learn more" # or any other selector
+            direction: DOWN # DOWN|UP|LEFT|RIGHT (optional, default: DOWN)
+            timeout: 50000 # (optional, default: 20000) ms
+            speed: 40 # 0-100 (optional, default: 40) Scroll speed. Higher values scroll faster.
+            visibilityPercentage: 100 # 0-100 (optional, default: 100) Percentage of element visible in viewport
+            centerElement: false # true|false (optional, default: false)
+- tapOn: "Learn more"
+- runFlow: # אם דפדפן כרום מהחנות נפתח
+    when:
+      visible:
+        id: "com.android.chrome:id/home_button"
+    commands:
+        - assertVisible: "consensio.cc/blog/sealed-sender"
+- runFlow: # אם דפדפן כרום המובנה נפתח
+    when:
+      visible:
+        id: "org.lineageos.jelly:id/toolbar_search_bar"
+    commands:
+        - tapOn:
+            id: "org.lineageos.jelly:id/url_bar"
+        - assertVisible: "https://consensio.cc/blog/sealed-sender"

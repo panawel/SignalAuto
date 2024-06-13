@@ -1,0 +1,19 @@
+appId: "org.consensio.whisper"
+
+name: screen_security
+---
+
+- runFlow: # בדיקה חיובית
+    when:
+      visible:
+        id: "org.consensio.whisper:id/switch_widget"
+        index: 0
+        enabled: true
+    commands:
+        - tapOn: "If read receipts are disabled, you won't be able to see read receipts from others."
+        - back
+        - back
+
+# - assertVisible:
+#     id: "org.consensio.whisper:id/switch_widget"
+#     enabled: false

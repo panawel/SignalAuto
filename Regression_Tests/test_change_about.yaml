@@ -1,0 +1,164 @@
+appId: "org.consensio.whisper"
+
+name: change_about
+---
+# שינוי about
+
+#---------------------------if-----------------------------
+- runFlow: # אם המסך נכבה
+    when:
+      visible:
+        id: "com.android.systemui:id/lock_icon_container"
+    commands:
+        - runFlow: if_screen_off.yaml
+- runFlow: # אם חלון התראות מוצג מעל
+    when:
+      visible:
+            text: "Bluetooth"
+    commands:
+        - runFlow: if_notification_center.yaml
+- runFlow: # אם 3 כפתורי ניווט
+    when:
+      visible:
+        id: "com.android.systemui:id/recent_apps"
+    commands:
+        - runFlow: if_navigation_to_gesture.yaml
+- launchApp
+- runFlow: # אם סיגנל לא מחובר לחשבון
+    when:
+      visible:
+        id: "org.consensio.whisper:id/welcome_transfer_or_restore"
+    commands:
+        - runFlow: test_log_in_account_PIN_code.yaml
+        - launchApp
+- runFlow: # אם סיגנל נעול עם קוד
+    when:
+      visible:
+        id: "com.android.systemui:id/lockPassword"
+    commands:
+        - runFlow: if_signal_screen_lock.yaml
+- runFlow: # אם הממשק לא באנגלית
+    when:
+      notVisible: "Chats"
+    commands:
+        - runFlow: if_gui_not_english.yaml
+        - launchApp
+#--------------------------------------------------------------
+- tapOn: "More options"
+- tapOn: "Settings"
+- tapOn:
+    id: "org.consensio.whisper:id/icon"
+    index: 0
+- assertVisible:
+    id: "org.consensio.whisper:id/manage_profile_avatar_background"
+- assertVisible:
+    id: "org.consensio.whisper:id/manage_profile_edit_photo"
+- assertVisible:
+    id: "org.consensio.whisper:id/manage_profile_about_icon"
+- tapOn:
+    id: "org.consensio.whisper:id/manage_profile_about"
+- assertVisible: "About"
+- assertVisible: "Write a few words about yourself…"
+- assertVisible: "Speak freely"
+- tapOn: "Encrypted"
+- assertVisible:
+    text: "Encrypted"
+    index: 0
+- tapOn: "Be kind"
+- assertVisible:
+    text: "Be kind"
+    index: 0
+- tapOn:
+    id: "org.consensio.whisper:id/progress_indicator"
+- assertVisible: "Profile"
+- assertVisible:
+    id: "org.consensio.whisper:id/manage_profile_avatar_background"
+- assertVisible: "Be kind"
+- back
+- assertVisible: "🙏 Be kind"
+- tapOn:
+    id: "org.consensio.whisper:id/icon"
+    index: 0
+- assertVisible:
+    id: "org.consensio.whisper:id/manage_profile_avatar_background"
+- assertVisible:
+    id: "org.consensio.whisper:id/manage_profile_edit_photo"
+- assertVisible:
+    id: "org.consensio.whisper:id/manage_profile_about_icon"
+- tapOn:
+    id: "org.consensio.whisper:id/manage_profile_about"
+- assertVisible: "About"
+- assertVisible: "Free to chat"
+- assertVisible: "Speak freely"
+- tapOn: "Encrypted"
+- assertVisible:
+    text: "Encrypted"
+    index: 0
+- tapOn:
+    id: "org.consensio.whisper:id/progress_indicator"
+- assertVisible: "Profile"
+- assertVisible:
+    id: "org.consensio.whisper:id/manage_profile_avatar_background"
+- assertVisible: "Encrypted"
+- back
+- assertVisible: "🤐 Encrypted"
+- tapOn:
+    id: "org.consensio.whisper:id/icon"
+    index: 0
+- assertVisible:
+    id: "org.consensio.whisper:id/manage_profile_avatar_background"
+- assertVisible:
+    id: "org.consensio.whisper:id/manage_profile_edit_photo"
+- assertVisible:
+    id: "org.consensio.whisper:id/manage_profile_about_icon"
+- tapOn:
+    id: "org.consensio.whisper:id/manage_profile_about"
+- assertVisible: "About"
+- assertVisible: "Coffee lover"
+- assertVisible: "Speak freely"
+- tapOn:
+    id: "org.consensio.whisper:id/edit_about_emoji"
+- tapOn:
+    id: "org.consensio.whisper:id/category_icon"
+    index: 1
+- assertVisible: "Smileys & People"
+- tapOn:
+    id: "org.consensio.whisper:id/emoji_image"
+    index: 14
+- eraseText
+- inputText: "In Love"
+- tapOn:
+    id: "org.consensio.whisper:id/progress_indicator"
+- assertVisible: "Profile"
+- assertVisible:
+    id: "org.consensio.whisper:id/manage_profile_avatar_background"
+- assertVisible: "In Love"
+- back
+- assertVisible: "🥰 In Love"
+- tapOn:
+    id: "org.consensio.whisper:id/icon"
+    index: 0
+- assertVisible:
+    id: "org.consensio.whisper:id/manage_profile_avatar_background"
+- assertVisible:
+    id: "org.consensio.whisper:id/manage_profile_edit_photo"
+- assertVisible:
+    id: "org.consensio.whisper:id/manage_profile_about_icon"
+- tapOn:
+    id: "org.consensio.whisper:id/manage_profile_about"
+- assertVisible: "About"
+- tapOn:
+    id: "org.consensio.whisper:id/edit_about_clear"
+- assertVisible: "Write a few words about yourself…"
+- tapOn:
+    id: "org.consensio.whisper:id/progress_indicator"
+- assertVisible: "Write a few words about yourself"
+
+
+
+
+
+
+
+
+

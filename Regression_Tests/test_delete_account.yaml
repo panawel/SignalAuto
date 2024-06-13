@@ -1,0 +1,77 @@
+appId: "org.consensio.whisper"
+
+name: delete_account
+---
+# מחיקת חשבון
+
+#---------------------------if-----------------------------
+- runFlow: # אם המסך נכבה
+    when:
+      visible:
+        id: "com.android.systemui:id/lock_icon_container"
+    commands:
+        - runFlow: if_screen_off.yaml
+- runFlow: # אם 3 כפתורי ניווט
+    when:
+      visible:
+        id: "com.android.systemui:id/recent_apps"
+    commands:
+        - runFlow: if_navigation_to_gesture.yaml
+- launchApp
+- runFlow: # אם סיגנל לא מחובר לחשבון
+    when:
+      visible:
+        id: "org.consensio.whisper:id/welcome_transfer_or_restore"
+    commands:
+        - runFlow: test_log_in_account_PIN_code.yaml
+        - launchApp
+- runFlow: # אם סיגנל נעול עם קוד
+    when:
+      visible:
+        id: "com.android.systemui:id/lockPassword"
+    commands:
+        - runFlow: if_signal_screen_lock.yaml
+- runFlow: # אם הממשק לא באנגלית
+    when:
+      notVisible: "Chats"
+    commands:
+        - runFlow: if_gui_not_english.yaml
+        - launchApp
+#--------------------------------------------------------------
+- tapOn: "Settings shortcut"
+- tapOn: "Account"
+- tapOn: "Delete account"
+- tapOn: "Select your country"
+- tapOn:
+    id: "org.consensio.whisper:id/delete_account_country_picker_filter"
+- inputText: "israel"
+- tapOn:
+    text: "Israel"
+    index: 1
+- tapOn:
+    text: "Phone number"
+    index: 1
+- inputText: ${OWN_NUMBER.slice(1);}
+- tapOn:
+    text: "Delete account"
+    index: 1
+- tapOn: "DELETE ACCOUNT"
+- assertVisible:
+    id: "org.consensio.whisper:id/delete_account_progress_dialog_spinner"
+- assertVisible:
+    id: "org.consensio.whisper:id/delete_account_progress_dialog_title"
+- assertVisible: "Deleting account…"
+- waitForAnimationToEnd
+- assertVisible: "Phone"
+- assertVisible: "Messaging"
+- assertVisible: "Contacts"
+- assertVisible: "Camera"
+- runFlow: test_log_in_account_PIN_code.yaml
+
+
+
+
+
+
+
+

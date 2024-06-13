@@ -1,0 +1,31 @@
+appId: "org.consensio.whisper"
+tags:
+    - DoNotRun
+---
+
+# מחליף ניווט ל 3 כפתורים
+
+# - runFlow:
+#     when:
+#       notVisible:
+#         id: "com.android.systemui:id/recent_apps"
+#     commands:
+#         - runFlow: if_navigation_to_3button.yaml
+
+- launchApp: "com.android.settings"
+- tapOn:
+    id: "com.android.settings:id/search_action_bar_title"
+- inputText: "ges"
+- assertVisible: "Gestures"
+- tapOn: "Gestures"
+- tapOn: "Gestures"
+- assertVisible: "Quickly open camera"
+- assertVisible: "System navigation"
+- tapOn: "Gesture navigation"
+- tapOn: "3-button navigation"
+- assertVisible:
+    id: "com.android.systemui:id/recent_apps"
+- assertVisible:
+    id: "com.android.systemui:id/home"
+- assertVisible:
+    id: "com.android.systemui:id/back"

@@ -1,0 +1,283 @@
+appId: "org.consensio.whisper"
+name: change_gui_language
+---
+# שינוי שפת ממשק
+
+#---------------------------if-----------------------------
+- runFlow: # אם המסך נכבה
+    when:
+      visible:
+        id: "com.android.systemui:id/lock_icon_container"
+    commands:
+        - runFlow: if_screen_off.yaml
+- runFlow: # אם חלון התראות מוצג מעל
+    when:
+      visible:
+            text: "Bluetooth"
+    commands:
+        - runFlow: if_notification_center.yaml
+- runFlow: # אם 3 כפתורי ניווט
+    when:
+      visible:
+        id: "com.android.systemui:id/recent_apps"
+    commands:
+        - runFlow: if_navigation_to_gesture.yaml
+- launchApp
+- runFlow: # אם סיגנל לא מחובר לחשבון
+    when:
+      visible:
+        id: "org.consensio.whisper:id/welcome_transfer_or_restore"
+    commands:
+        - runFlow: test_log_in_account_PIN_code.yaml
+        - launchApp
+- runFlow: # אם סיגנל נעול עם קוד
+    when:
+      visible:
+        id: "com.android.systemui:id/lockPassword"
+    commands:
+        - runFlow: if_signal_screen_lock.yaml
+- runFlow: # אם הממשק לא באנגלית
+    when:
+      notVisible: "Chats"
+    commands:
+        - runFlow: if_gui_not_english.yaml
+        - launchApp
+#--------------------------------------------------------------
+- runFlow:
+    when:
+      visible:
+        id: "org.consensio.whisper:id/toolbar_settings_touch_area"
+    commands:
+        - tapOn:
+            id: "org.consensio.whisper:id/toolbar_settings_touch_area"
+- runFlow:
+    when:
+      visible:
+        id: "org.consensio.whisper:id/toolbar_icon"
+    commands:
+        - tapOn:
+            id: "org.consensio.whisper:id/toolbar_icon"
+- tapOn:
+    id: "org.consensio.whisper:id/title"
+    index: 3
+- tapOn:
+    id: "org.consensio.whisper:id/title"
+    index: 3
+- scrollUntilVisible:
+            element:
+              text: "System default" # or any other selector
+            direction: UP # DOWN|UP|LEFT|RIGHT (optional, default: DOWN)
+            timeout: 50000 # (optional, default: 20000) ms
+            speed: 40 # 0-100 (optional, default: 40) Scroll speed. Higher values scroll faster.
+            visibilityPercentage: 100 # 0-100 (optional, default: 100) Percentage of element visible in viewport
+            centerElement: true # true|false (optional, default: false)
+# רוסית
+- runFlow:
+    when:
+      notVisible: "Русский"
+    commands:
+        - scrollUntilVisible:
+            element:
+              text: "Русский" # or any other selector
+            direction: DOWN # DOWN|UP|LEFT|RIGHT (optional, default: DOWN)
+            timeout: 50000 # (optional, default: 20000) ms
+            speed: 40 # 0-100 (optional, default: 40) Scroll speed. Higher values scroll faster.
+            visibilityPercentage: 100 # 0-100 (optional, default: 100) Percentage of element visible in viewport
+            centerElement: false # true|false (optional, default: false)
+- tapOn: "Русский"
+- assertVisible: "Русский"
+- assertVisible: "Внешний вид"
+- back
+- assertVisible: "Истории"
+- assertVisible: "Привязанные устройства"
+- tapOn: "Чаты"
+- assertVisible: "Клавиатура"
+- back
+- back
+- assertVisible: "Чаты"
+- tapOn: "Ещё"
+- assertVisible: "Профиль уведомлений"
+- back
+
+
+- runFlow:
+    when:
+      visible:
+        id: "org.consensio.whisper:id/toolbar_settings_touch_area"
+    commands:
+        - tapOn:
+            id: "org.consensio.whisper:id/toolbar_settings_touch_area"
+- runFlow:
+    when:
+      visible:
+        id: "org.consensio.whisper:id/toolbar_icon"
+    commands:
+        - tapOn:
+            id: "org.consensio.whisper:id/toolbar_icon"
+- tapOn:
+    id: "org.consensio.whisper:id/title"
+    index: 3
+- tapOn:
+    id: "org.consensio.whisper:id/title"
+    index: 3
+- scrollUntilVisible:
+            element:
+              text: "По умолчанию" # or any other selector
+            direction: UP # DOWN|UP|LEFT|RIGHT (optional, default: DOWN)
+            timeout: 50000 # (optional, default: 20000) ms
+            speed: 40 # 0-100 (optional, default: 40) Scroll speed. Higher values scroll faster.
+            visibilityPercentage: 100 # 0-100 (optional, default: 100) Percentage of element visible in viewport
+            centerElement: true # true|false (optional, default: false)
+
+# ערבית
+- runFlow:
+    when:
+      notVisible: "العربية"
+    commands:
+        - scrollUntilVisible:
+            element:
+              text: "العربية" # or any other selector
+            direction: UP # DOWN|UP|LEFT|RIGHT (optional, default: DOWN)
+            timeout: 50000 # (optional, default: 20000) ms
+            speed: 40 # 0-100 (optional, default: 40) Scroll speed. Higher values scroll faster.
+            visibilityPercentage: 100 # 0-100 (optional, default: 100) Percentage of element visible in viewport
+            centerElement: false # true|false (optional, default: false)
+- tapOn: "العربية"
+- assertVisible: "العربية"
+- assertVisible:
+    text: "المظهر"
+    index: 0
+- back
+- assertVisible: "الإعدادات"
+- assertVisible: "الخصوصية"
+- tapOn: "الأجهزة المرتبطة"
+- assertVisible: "لا توجد أجهزة موصولة"
+- back
+- back
+- assertVisible: "المُحادثات"
+- tapOn: "المزيد من الخيارات"
+- assertVisible: "مجموعة جديدة"
+- back
+
+- runFlow:
+    when:
+      visible:
+        id: "org.consensio.whisper:id/toolbar_settings_touch_area"
+    commands:
+        - tapOn:
+            id: "org.consensio.whisper:id/toolbar_settings_touch_area"
+- runFlow:
+    when:
+      visible:
+        id: "org.consensio.whisper:id/toolbar_icon"
+    commands:
+        - tapOn:
+            id: "org.consensio.whisper:id/toolbar_icon"
+- tapOn:
+    id: "org.consensio.whisper:id/title"
+    index: 3
+- tapOn:
+    id: "org.consensio.whisper:id/title"
+    index: 3
+- scrollUntilVisible:
+            element:
+              text: "افتراضات النظام" # or any other selector
+            direction: UP # DOWN|UP|LEFT|RIGHT (optional, default: DOWN)
+            timeout: 50000 # (optional, default: 20000) ms
+            speed: 40 # 0-100 (optional, default: 40) Scroll speed. Higher values scroll faster.
+            visibilityPercentage: 100 # 0-100 (optional, default: 100) Percentage of element visible in viewport
+            centerElement: true # true|false (optional, default: false)
+# עברית
+- runFlow:
+    when:
+      notVisible: "עברית"
+    commands:
+        - scrollUntilVisible:
+            element:
+              text: "עברית" # or any other selector
+            direction: DOWN # DOWN|UP|LEFT|RIGHT (optional, default: DOWN)
+            timeout: 50000 # (optional, default: 20000) ms
+            speed: 40 # 0-100 (optional, default: 40) Scroll speed. Higher values scroll faster.
+            visibilityPercentage: 100 # 0-100 (optional, default: 100) Percentage of element visible in viewport
+            centerElement: false # true|false (optional, default: false)
+- tapOn: "עברית"
+- assertVisible: "עברית"
+- assertVisible: "מראה"
+- back
+- assertVisible: "הגדרות"
+- assertVisible: "התראות"
+- tapOn: "פרטיות"
+- assertVisible: "אישורי קריאה"
+- back
+- tapOn: "נתונים ואחסון"
+- assertVisible: "הגדר איכות מדיה"
+- back
+- back
+- assertVisible: "התכתבויות"
+- tapOn: "אפשרויות נוספות"
+- assertVisible: "פרופיל התראות"
+- back
+
+- runFlow:
+    when:
+      visible:
+        id: "org.consensio.whisper:id/toolbar_settings_touch_area"
+    commands:
+        - tapOn:
+            id: "org.consensio.whisper:id/toolbar_settings_touch_area"
+- runFlow:
+    when:
+      visible:
+        id: "org.consensio.whisper:id/toolbar_icon"
+    commands:
+        - tapOn:
+            id: "org.consensio.whisper:id/toolbar_icon"
+- tapOn:
+    id: "org.consensio.whisper:id/title"
+    index: 3
+- tapOn:
+    id: "org.consensio.whisper:id/title"
+    index: 3
+- scrollUntilVisible:
+            element:
+              text: "ברירת מחדל" # or any other selector
+            direction: UP # DOWN|UP|LEFT|RIGHT (optional, default: DOWN)
+            timeout: 50000 # (optional, default: 20000) ms
+            speed: 40 # 0-100 (optional, default: 40) Scroll speed. Higher values scroll faster.
+            visibilityPercentage: 100 # 0-100 (optional, default: 100) Percentage of element visible in viewport
+            centerElement: true # true|false (optional, default: false)
+
+# אנגלית
+- runFlow:
+    when:
+      notVisible: "English"
+    commands:
+        - scrollUntilVisible:
+            element:
+              text: "English" # or any other selector
+            direction: UP # DOWN|UP|LEFT|RIGHT (optional, default: DOWN)
+            timeout: 50000 # (optional, default: 20000) ms
+            speed: 40 # 0-100 (optional, default: 40) Scroll speed. Higher values scroll faster.
+            visibilityPercentage: 100 # 0-100 (optional, default: 100) Percentage of element visible in viewport
+            centerElement: false # true|false (optional, default: false)
+- tapOn: "English"
+- assertVisible: "English"
+- assertVisible: "Appearance"
+- back
+- assertVisible: "Account"
+- assertVisible: "Appearance"
+- assertVisible: "Settings"
+- tapOn: "Notifications"
+- assertVisible: "Calls"
+- back
+- tapOn: "Stories"
+- assertVisible: "Turn off stories"
+- back
+- back
+- assertVisible: "Chats"
+- tapOn: "More options"
+- assertVisible: "Mark all read"
+- back
+
+
+

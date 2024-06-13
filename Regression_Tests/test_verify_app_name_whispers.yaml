@@ -1,0 +1,64 @@
+appId: "org.consensio.whisper"
+
+name: verify_app_name_whispers
+---
+# שינוי שם ל Whispers
+
+#---------------------------if-----------------------------
+- runFlow: # אם המסך נכבה
+    when:
+      visible:
+        id: "com.android.systemui:id/lock_icon_container"
+    commands:
+        - runFlow: if_screen_off.yaml
+- runFlow: # אם חלון התראות מוצג מעל
+    when:
+      visible:
+            text: "Bluetooth"
+    commands:
+        - runFlow: if_notification_center.yaml
+- runFlow: # אם 3 כפתורי ניווט
+    when:
+      visible:
+        id: "com.android.systemui:id/recent_apps"
+    commands:
+        - runFlow: if_navigation_to_gesture.yaml
+- launchApp
+- runFlow: # אם סיגנל לא מחובר לחשבון
+    when:
+      visible:
+        id: "org.consensio.whisper:id/welcome_transfer_or_restore"
+    commands:
+        - runFlow: test_log_in_account_PIN_code.yaml
+        - launchApp
+- runFlow: # אם סיגנל נעול עם קוד
+    when:
+      visible:
+        id: "com.android.systemui:id/lockPassword"
+    commands:
+        - runFlow: if_signal_screen_lock.yaml
+- runFlow: # אם הממשק לא באנגלית
+    when:
+      notVisible: "Chats"
+    commands:
+        - runFlow: if_gui_not_english.yaml
+        - launchApp
+#--------------------------------------------------------------
+- assertVisible: "Whispers"
+- pressKey: Home
+- swipe:
+    start: 50%,85%
+    end: 50%,27%
+    duration: 150
+- scrollUntilVisible:
+    element:
+      text: "Whispers" # or any other selector
+    direction: DOWN # DOWN|UP|LEFT|RIGHT (optional, default: DOWN)
+    timeout: 50000 # (optional, default: 20000) ms
+    speed: 40 # 0-100 (optional, default: 40) Scroll speed. Higher values scroll faster.
+    visibilityPercentage: 100 # 0-100 (optional, default: 100) Percentage of element visible in viewport
+    centerElement: true # true|false (optional, default: false)
+- longPressOn: "Whispers"
+- tapOn: "App info"
+- assertVisible: "App info"
+- assertVisible: "Whispers"

@@ -1,0 +1,9 @@
+appId: "org.consensio.whisper"
+tags:
+    - DoNotRun
+---
+
+- swipe:
+    start: 48%,99%
+    end: 48%,94%
+    duration: 1948

@@ -1,0 +1,121 @@
+appId: "org.consensio.whisper"
+
+name: turn_off_stories
+env:
+    name: turn_off_stories
+---
+# לכבות את הסטורי
+
+#---------------------------if-----------------------------
+- runFlow: # אם המסך נכבה
+    when:
+      visible:
+        id: "com.android.systemui:id/lock_icon_container"
+    commands:
+        - runFlow: if_screen_off.yaml
+- runFlow: # אם חלון התראות מוצג מעל
+    when:
+      visible:
+            text: "Bluetooth"
+    commands:
+        - runFlow: if_notification_center.yaml
+- runFlow: # אם 3 כפתורי ניווט
+    when:
+      visible:
+        id: "com.android.systemui:id/recent_apps"
+    commands:
+        - runFlow: if_navigation_to_gesture.yaml
+- launchApp
+- runFlow: # אם סיגנל לא מחובר לחשבון
+    when:
+      visible:
+        id: "org.consensio.whisper:id/welcome_transfer_or_restore"
+    commands:
+        - runFlow: test_log_in_account_PIN_code.yaml
+        - launchApp
+- runFlow: # אם סיגנל נעול עם קוד
+    when:
+      visible:
+        id: "com.android.systemui:id/lockPassword"
+    commands:
+        - runFlow: if_signal_screen_lock.yaml
+- runFlow: # אם הממשק לא באנגלית
+    when:
+      notVisible: "Chats"
+    commands:
+        - runFlow: if_gui_not_english.yaml
+        - launchApp
+#--------------------------------------------------------------
+- assertVisible:
+    id: "org.consensio.whisper:id/stories_tab_touch_point"
+- assertVisible:
+    id: "org.consensio.whisper:id/stories_tab_icon"
+- assertVisible:
+    id: "org.consensio.whisper:id/stories_tab_label"
+- tapOn:
+    id: "org.consensio.whisper:id/camera_fab"
+- tapOn:
+    id: "org.consensio.whisper:id/camera_capture_button"
+- tapOn:
+    id: "org.consensio.whisper:id/send"
+- assertVisible: "My Story"
+- runFlow:
+    when:
+      visible: "Tap to choose your viewers"
+    commands:
+        - assertVisible: "Tap to choose your viewers"
+- runFlow:
+    when:
+      visible: "Send to"
+    commands:
+        - assertVisible: "Send to"
+- back
+- back
+- back
+- tapOn: "More options"
+- tapOn: "Settings"
+- tapOn: "Stories"
+- tapOn: "Turn off stories"
+- assertVisible: "Turn off stories"
+- tapOn:
+    id: "android:id/button1"
+- assertVisible: "Stories"
+- assertVisible: "Turn on stories"
+- assertVisible:
+    id: "org.consensio.whisper:id/summary"
+- back
+- back
+- assertNotVisible:
+    id: "org.consensio.whisper:id/stories_tab_touch_point"
+- assertNotVisible:
+    id: "org.consensio.whisper:id/stories_tab_icon"
+- assertNotVisible:
+    id: "org.consensio.whisper:id/stories_tab_label"
+- tapOn:
+    id: "org.consensio.whisper:id/camera_fab"
+- tapOn:
+    id: "org.consensio.whisper:id/camera_capture_button"
+- tapOn:
+    id: "org.consensio.whisper:id/send"
+- assertNotVisible: "My Story"
+- assertNotVisible: "Tap to choose your viewers"
+- back
+- back
+- back
+- tapOn: "More options"
+- tapOn: "Settings"
+- tapOn: "Stories"
+- tapOn: "Turn on stories"
+- assertVisible:
+    text: "Stories"
+    index: 0
+- assertVisible: "New story"
+- assertVisible: "Turn off stories"
+
+
+
+
+
+
+
+

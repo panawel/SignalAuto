@@ -1,0 +1,25 @@
+appId: "org.consensio.whisper"
+tags:
+    - DoNotRun
+---
+
+# אם מכשיר נעול
+
+# - runFlow:
+#     when:
+#       visible:
+#         id: "com.android.systemui:id/lock_icon_container"
+#     commands:
+#         - runFlow: if_screen_off.yaml
+
+
+
+- assertVisible:
+    id: "com.android.systemui:id/lock_icon_container"
+- pressKey: power
+- swipe:              # This command swipes in the left direction from the middle of the device. 
+    direction: UP
+- inputText: "2107"
+- tapOn:
+    id: "com.android.systemui:id/key_enter"
+- launchApp

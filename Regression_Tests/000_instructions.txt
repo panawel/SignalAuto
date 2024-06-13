@@ -1,0 +1,33 @@
+-----------------|
+Regression Test  |
+-----------------|
+1. חבר המכשיר למחשב בכבל usb
+2. אפשר גישת adb
+3. וודא חיבור file transfer
+4. עדכן בפקודה הבאה את מספר הטלפון אליו ישלחו ההודעות ומאיזה מספר
+5. הרץ את הפקודה הבאה בטרמינל:
+
+maestro test -e CONTACT_NUMBER=0506658832 -e OWN_NUMBER=0515107154 --format junit ./Desktop/Automation/Signal/Regression_Tests/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------|
+הערות:   |
+---------|
+מכשיר 2245 מתנתק לו החיבור adb כל הזמן. אז לא מומלץ לבצע עליו.
+
+
+# https://maestro.mobile.dev/cli/test-suites-and-reports
+# https://github.com/agens-no/vscode-maestro-assistant?tab=readme-ov-file

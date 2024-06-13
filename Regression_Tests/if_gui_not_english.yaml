@@ -1,0 +1,54 @@
+appId: "org.consensio.whisper"
+tags:
+    - DoNotRun
+---
+
+# אם הממשק לא באנגלית
+
+# - runFlow: # אם הממשק לא באנגלית
+#     when:
+#       notVisible: "Chats"
+#     commands:
+#         - runFlow: if_gui_not_english.yaml
+- runFlow:
+    when:
+      visible:
+        id: "org.consensio.whisper:id/toolbar_settings_touch_area"
+    commands:
+        - tapOn:
+            id: "org.consensio.whisper:id/toolbar_settings_touch_area"
+- runFlow:
+    when:
+      visible:
+        id: "org.consensio.whisper:id/toolbar_icon"
+    commands:
+        - tapOn:
+            id: "org.consensio.whisper:id/toolbar_icon"
+- tapOn:
+    id: "org.consensio.whisper:id/title"
+    index: 2
+- tapOn:
+    id: "org.consensio.whisper:id/title"
+    index: 3
+- tapOn:
+    id: "org.consensio.whisper:id/title"
+    index: 3
+- runFlow:
+    when:
+      notVisible: "English"
+    commands:
+        - scrollUntilVisible:
+            element:
+              text: "English" # or any other selector
+            direction: UP # DOWN|UP|LEFT|RIGHT (optional, default: DOWN)
+            timeout: 50000 # (optional, default: 20000) ms
+            speed: 40 # 0-100 (optional, default: 40) Scroll speed. Higher values scroll faster.
+            visibilityPercentage: 100 # 0-100 (optional, default: 100) Percentage of element visible in viewport
+            centerElement: false # true|false (optional, default: false)
+- tapOn: "English"
+- assertVisible: "English"
+- assertVisible: "Appearance"
+- back
+- assertVisible: "Account"
+- assertVisible: "Appearance"
+- assertVisible: "Settings"

@@ -1,0 +1,165 @@
+appId: "org.consensio.whisper"
+tags:
+    - DoNotRun
+name: log_in_account_PIN_code
+---
+# תתחברות לחשבון
+
+#---------------------------if-----------------------------
+- runFlow: # אם המסך נכבה
+    when:
+      visible:
+        id: "com.android.systemui:id/lock_icon_container"
+    commands:
+        - runFlow: if_screen_off.yaml
+- runFlow: # אם 3 כפתורי ניווט
+    when:
+      visible:
+        id: "com.android.systemui:id/recent_apps"
+    commands:
+        - runFlow: if_navigation_to_gesture.yaml
+#--------------------------------------------------------------        
+- launchApp:
+    appId: "org.consensio.whisper"
+    clearState: true
+    permissions: { all: deny } # optional: by default all permissions are allowed,
+                               # even if clearState: true is passed
+- runFlow:
+    when:
+      visible:
+        id: "com.android.permissioncontroller:id/permission_allow_button"
+    commands:
+        - tapOn:
+            id: "com.android.permissioncontroller:id/permission_allow_button"
+- tapOn:
+    id: "org.consensio.whisper:id/button"
+- assertNotVisible: "Allow permissions"
+- assertNotVisible: "To help you message people you know, Signal will request these permissions."
+- tapOn:
+    id: "android:id/button1"
+- tapOn:
+    id: "com.android.permissioncontroller:id/permission_allow_button"
+- tapOn:
+    id: "com.android.permissioncontroller:id/permission_allow_button"
+- eraseText
+- inputText: ${OWN_NUMBER.slice(1);}
+- tapOn:
+    id: "org.consensio.whisper:id/button"
+- tapOn:
+    id: "android:id/button1"
+- runFlow:
+    when:
+      visible:
+        id: "org.consensio.whisper:id/alertTitle"
+        checked: true
+    commands:
+        - tapOn:
+            id: "android:id/button1"
+- waitForAnimationToEnd
+- extendedWaitUntil:
+    notVisible: 
+        id: "org.consensio.whisper:id/progress"
+    timeout: 300000
+#-------------------------When Failed to login by SMS code-------------------------------
+- runFlow:
+    when:
+      visible:
+        id: "org.consensio.whisper:id/resend_sms_count_down"
+    commands:
+        - runFlow: test_code_from_SMS.yaml
+- runFlow:
+    when:
+      visible:
+        id: "org.consensio.whisper:id/resend_sms_count_down"
+    commands:
+        - runFlow: test_code_from_SMS.yaml
+- runFlow:
+    when:
+      visible:
+        id: "org.consensio.whisper:id/resend_sms_count_down"
+    commands:
+        - runFlow: test_code_from_SMS.yaml
+#-----------------------------------------------------------------------------------------
+- assertNotVisible: "We need to verify that you're human."
+- assertNotVisible: "hCaptcha Privacy Policy"
+- runFlow:
+    when:
+      visible: "Allow Whispers to send you notifications?"
+    commands:
+        - tapOn: "Allow"   
+- assertVisible: "Set up your profile"
+- assertVisible: "Profiles are visible to people you message, contacts, and groups. Learn more"
+- assertVisible:
+    id: "org.consensio.whisper:id/avatar_background"
+- assertVisible: "First name (required)"
+- assertVisible: "Last name (optional)"
+- runFlow: # אם לא כתוב שם פרטי
+    when:
+      visible:
+        id: "org.consensio.whisper:id/button"
+        enabled: false
+    commands:
+        - tapOn:
+            id: "org.consensio.whisper:id/given_name"
+        - inputText: "Signal Test"
+- tapOn: "Next"
+# בדיקה שאין PIN code בתהליך ההרשמה
+- assertNotVisible: "Create your PIN"
+- assertNotVisible: "PINs can help you restore your account and keep your info encrypted with Signal. Learn more"
+- assertNotVisible: "Create alphanumeric PIN"
+- assertVisible: "Whispers"
+- assertVisible:
+    text: "No chats yet.
+
+        Get started by messaging a friend."
+- runFlow:
+    when:
+      visible:
+        id: "org.consensio.whisper:id/basic_megaphone_title"
+    commands:
+        - tapOn:
+            id: "org.consensio.whisper:id/basic_megaphone_action"
+        - assertVisible:
+            text: "Whispers"
+            index: 1
+        - tapOn:
+            id: "android:id/switch_widget"
+            checked: false
+        - back
+- assertVisible: "Get started"
+
+# המשך בדיקה אם יש PIN code בהגדרות
+- tapOn: "More options"
+- tapOn: "Settings"
+- tapOn: "Account"
+- assertNotVisible: "Signal PIN"
+- assertNotVisible: "Create a PIN"
+- assertNotVisible: "PIN reminders"
+- assertNotVisible: "Registration Lock"
+- assertNotVisible: "Advanced PIN settings"
+- back
+- back
+
+# הבדיקה שאין invite friends
+- assertNotVisible: "Invite to Signal"
+- swipe:
+   from: 
+     id: "org.consensio.whisper:id/text"
+     index: 1
+   direction: LEFT
+- assertNotVisible: "Invite to Signal"
+- tapOn:
+    id: "org.consensio.whisper:id/toolbar_icon"
+- assertNotVisible: "Invite your friends"
+- back
+- tapOn:
+    id: fab
+- hideKeyboard
+- assertNotVisible: "Invite to Signal"
+- tapOn: "More options"
+- assertNotVisible: "Invite friends"
+- back
+- back
+- tapOn: "More options"
+- assertNotVisible: "Invite friends"
+- back

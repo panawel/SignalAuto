@@ -1,0 +1,80 @@
+appId: "org.consensio.whisper"
+
+name: change_profile_name
+---
+# שינוי שם פרופיל
+
+#---------------------------if-----------------------------
+- runFlow: # אם המסך נכבה
+    when:
+      visible:
+        id: "com.android.systemui:id/lock_icon_container"
+    commands:
+        - runFlow: if_screen_off.yaml
+- runFlow: # אם חלון התראות מוצג מעל
+    when:
+      visible:
+            text: "Bluetooth"
+    commands:
+        - runFlow: if_notification_center.yaml
+- runFlow: # אם 3 כפתורי ניווט
+    when:
+      visible:
+        id: "com.android.systemui:id/recent_apps"
+    commands:
+        - runFlow: if_navigation_to_gesture.yaml
+- launchApp
+- runFlow: # אם סיגנל לא מחובר לחשבון
+    when:
+      visible:
+        id: "org.consensio.whisper:id/welcome_transfer_or_restore"
+    commands:
+        - runFlow: test_log_in_account_PIN_code.yaml
+        - launchApp
+- runFlow: # אם סיגנל נעול עם קוד
+    when:
+      visible:
+        id: "com.android.systemui:id/lockPassword"
+    commands:
+        - runFlow: if_signal_screen_lock.yaml
+- runFlow: # אם הממשק לא באנגלית
+    when:
+      notVisible: "Chats"
+    commands:
+        - runFlow: if_gui_not_english.yaml
+        - launchApp
+#--------------------------------------------------------------
+- tapOn: "More options"
+- tapOn: "Settings"
+- tapOn:
+    id: "org.consensio.whisper:id/icon"
+    index: 0
+- tapOn:
+    id: "org.consensio.whisper:id/manage_profile_name_subtitle"
+- eraseText: 100
+- inputText: "My Test First Name"
+- assertVisible: "My Test First Name"
+- tapOn:
+    id: "org.consensio.whisper:id/edit_profile_name_family_name"
+- eraseText: 100
+- inputText: "My Test Last Name"
+- assertVisible: "My Test Last Name"
+- tapOn: "Save"
+- assertVisible: "Profile"
+- assertVisible:
+    id: "org.consensio.whisper:id/manage_profile_avatar_background"
+- assertVisible: "My Test First Name My Test Last Name"
+- back
+- assertVisible: "Settings"
+- assertVisible: "My Test First Name My Test Last Name"
+- assertVisible: "Account"
+- assertVisible: "Linked devices"
+- back
+
+
+
+
+
+
+
+

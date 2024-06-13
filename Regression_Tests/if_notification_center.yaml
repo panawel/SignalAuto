@@ -1,0 +1,27 @@
+appId: "org.consensio.whisper"
+tags:
+    - DoNotRun
+---
+
+
+# - runFlow: # אם חלון התראות מוצג מעל
+#     when:
+#       visible:
+#             text: "Bluetooth"
+#     commands:
+#         - runFlow: if_notification_center.yaml
+
+
+- swipe:
+    start: 50%,85%
+    end: 49%,34%
+    duration: 200
+- runFlow:
+    when:
+        visible:
+            text: "Bluetooth"
+    commands:
+        - swipe:
+            start: 50%,85%
+            end: 49%,34%
+            duration: 200

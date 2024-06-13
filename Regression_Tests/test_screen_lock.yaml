@@ -1,0 +1,109 @@
+appId: "org.consensio.whisper"
+
+name: screen_lock
+---
+# נעילת סיגנל עם קוד כניסה
+
+#---------------------------if-----------------------------
+- runFlow: # אם המסך נכבה
+    when:
+      visible:
+        id: "com.android.systemui:id/lock_icon_container"
+    commands:
+        - runFlow: if_screen_off.yaml
+- runFlow: # אם חלון התראות מוצג מעל
+    when:
+      visible:
+            text: "Bluetooth"
+    commands:
+        - runFlow: if_notification_center.yaml
+- runFlow: # אם 3 כפתורי ניווט
+    when:
+      visible:
+        id: "com.android.systemui:id/recent_apps"
+    commands:
+        - runFlow: if_navigation_to_gesture.yaml
+- launchApp
+- runFlow: # אם סיגנל לא מחובר לחשבון
+    when:
+      visible:
+        id: "org.consensio.whisper:id/welcome_transfer_or_restore"
+    commands:
+        - runFlow: test_log_in_account_PIN_code.yaml
+        - launchApp
+- runFlow: # אם סיגנל נעול עם קוד
+    when:
+      visible:
+        id: "com.android.systemui:id/lockPassword"
+    commands:
+        - runFlow: if_signal_screen_lock.yaml
+- runFlow: # אם הממשק לא באנגלית
+    when:
+      notVisible: "Chats"
+    commands:
+        - runFlow: if_gui_not_english.yaml
+        - launchApp
+#--------------------------------------------------------------
+- tapOn: "More options"
+- tapOn: "Settings"
+- tapOn: "Privacy"
+- scrollUntilVisible:
+            element:
+              text: "Signal messages and calls, always relay calls, and sealed sender" # or any other selector
+            direction: DOWN # DOWN|UP|LEFT|RIGHT (optional, default: DOWN)
+            timeout: 50000 # (optional, default: 20000) ms
+            speed: 40 # 0-100 (optional, default: 40) Scroll speed. Higher values scroll faster.
+            visibilityPercentage: 100 # 0-100 (optional, default: 100) Percentage of element visible in viewport
+            centerElement: true # true|false (optional, default: false)
+- assertVisible: "App security"
+- tapOn:
+    id: "org.consensio.whisper:id/switch_widget"
+    index: 0
+- tapOn: "Screen lock inactivity timeout"
+- repeat:
+    times: 3
+    commands:
+      - tapOn:
+          id: "org.consensio.whisper:id/numeric_keyboard_back"
+- tapOn:
+    id: "org.consensio.whisper:id/numeric_keyboard_1"
+- tapOn:
+    id: "android:id/button1"
+- pressKey: Home
+- assertVisible: "Whispers notification: Signal is unlocked"
+- extendedWaitUntil:
+    notVisible: 
+        text: "Whispers notification: Signal is unlocked"
+    timeout: 308000
+- launchApp
+- assertVisible:
+    id: "com.android.systemui:id/icon"
+- assertVisible: "Unlock Signal"
+- repeat:
+    times: 5
+    commands:
+      - inputText: "6655"
+      - pressKey: Enter
+- assertVisible:
+    id: "com.android.systemui:id/error"
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- inputText: "2107"
+- pressKey: Enter
+- waitForAnimationToEnd
+- assertVisible:
+    id: "org.consensio.whisper:id/conversation_list_title"
+- assertVisible:
+    id: "org.consensio.whisper:id/chats_tab_label"
+- assertVisible:
+    id: "org.consensio.whisper:id/stories_tab_icon"
+- tapOn: "More options"
+- tapOn: "Settings"
+- tapOn: "Privacy"
+- assertVisible: "App security"
+- tapOn:
+    id: "org.consensio.whisper:id/switch_widget"
+    index: 2
+- back
+- back

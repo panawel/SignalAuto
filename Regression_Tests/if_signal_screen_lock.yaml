@@ -1,0 +1,36 @@
+appId: "org.consensio.whisper"
+tags:
+    - DoNotRun
+---
+
+# אם סיגנל נעול עם קוד
+
+# - runFlow:
+#     when:
+#       visible:
+#         id: "com.android.systemui:id/lockPassword"
+#     commands:
+#         - runFlow: if_signal_screen_lock.yaml
+    
+
+- assertVisible:
+    id: "com.android.systemui:id/icon"
+- assertVisible: "Unlock Signal"
+- inputText: "2107"
+- pressKey: Enter
+- waitForAnimationToEnd
+- tapOn: "More options"
+- tapOn: "Settings"
+- tapOn: "Privacy"
+- scrollUntilVisible:
+            element:
+              text: "Signal messages and calls, always relay calls, and sealed sender" # or any other selector
+            direction: DOWN # DOWN|UP|LEFT|RIGHT (optional, default: DOWN)
+            timeout: 50000 # (optional, default: 20000) ms
+            speed: 40 # 0-100 (optional, default: 40) Scroll speed. Higher values scroll faster.
+            visibilityPercentage: 100 # 0-100 (optional, default: 100) Percentage of element visible in viewport
+            centerElement: true # true|false (optional, default: false)
+- assertVisible: "App security"
+- tapOn:
+    id: "org.consensio.whisper:id/switch_widget"
+    index: 0

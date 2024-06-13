@@ -1,0 +1,126 @@
+appId: "org.consensio.whisper"
+
+name: watch_storie
+---
+# צפה בסטורי
+
+#---------------------------if-----------------------------
+- runFlow: # אם המסך נכבה
+    when:
+      visible:
+        id: "com.android.systemui:id/lock_icon_container"
+    commands:
+        - runFlow: if_screen_off.yaml
+- runFlow: # אם חלון התראות מוצג מעל
+    when:
+      visible:
+            text: "Bluetooth"
+    commands:
+        - runFlow: if_notification_center.yaml
+- runFlow: # אם 3 כפתורי ניווט
+    when:
+      visible:
+        id: "com.android.systemui:id/recent_apps"
+    commands:
+        - runFlow: if_navigation_to_gesture.yaml
+- launchApp
+- runFlow: # אם סיגנל לא מחובר לחשבון
+    when:
+      visible:
+        id: "org.consensio.whisper:id/welcome_transfer_or_restore"
+    commands:
+        - runFlow: test_log_in_account_PIN_code.yaml
+        - launchApp
+- runFlow: # אם סיגנל נעול עם קוד
+    when:
+      visible:
+        id: "com.android.systemui:id/lockPassword"
+    commands:
+        - runFlow: if_signal_screen_lock.yaml
+- runFlow: # אם הממשק לא באנגלית
+    when:
+      notVisible: "Chats"
+    commands:
+        - runFlow: if_gui_not_english.yaml
+        - launchApp
+#--------------------------------------------------------------
+- runFlow:
+    when:
+      notVisible:
+        text: "No chats yet.
+
+            Get started by messaging a friend."
+    commands:
+        - runFlow: test_clear_message_history.yaml
+- launchApp
+- tapOn:
+    id: "org.consensio.whisper:id/stories_tab_touch_point"
+- runFlow:
+    when:
+      visible:
+        id: "org.consensio.whisper:id/edu_tap_label"
+    commands:
+        - tapOn:
+            id: "org.consensio.whisper:id/close"
+- repeat:
+    times: 3
+    commands:
+      - tapOn:
+            id: "org.consensio.whisper:id/camera_fab"
+      - tapOn:
+            id: "org.consensio.whisper:id/camera_capture_button"
+      - tapOn:
+            id: "org.consensio.whisper:id/send"
+      - tapOn: "My Story"
+      - runFlow:
+          when:
+            visible:
+                id: "org.consensio.whisper:id/choose_initial_my_story_all_signal_connnections_radio"
+          commands:
+            - tapOn:
+                id: "org.consensio.whisper:id/choose_initial_my_story_all_signal_connnections_radio"
+            - tapOn: "Save"
+      - tapOn:
+          id: "org.consensio.whisper:id/share_confirm"
+      - waitForAnimationToEnd
+      - assertVisible: "Now"
+- assertVisible:
+    id: "org.consensio.whisper:id/story"
+# הצפיה עצמה
+- tapOn:
+    id: "org.consensio.whisper:id/story"
+- tapOn:
+    id: "org.consensio.whisper:id/story"
+    index: 2
+- runFlow:
+    when:
+      visible:
+        id: "org.consensio.whisper:id/edu_overlay"
+    commands:
+        - tapOn:
+            id: "org.consensio.whisper:id/edu_got_it"
+        - tapOn:
+            id: "org.consensio.whisper:id/story"
+            index: 2
+- assertVisible:
+    id: "org.consensio.whisper:id/progress"
+- assertVisible:
+    id: "org.consensio.whisper:id/more"
+- assertVisible:
+    id: "org.consensio.whisper:id/blur"
+- assertVisible: "You"
+- assertVisible:
+    id: "org.consensio.whisper:id/close"
+- assertVisible:
+    id: "org.consensio.whisper:id/story_caption_container"
+- assertVisible:
+    id: "org.consensio.whisper:id/story_gradient_top"
+- extendedWaitUntil:
+    visible: "My Stories"
+    timeout: 17000
+- assertVisible:
+    id: "org.consensio.whisper:id/story"
+    index: 2
+- back      
+- tapOn:
+    id: "org.consensio.whisper:id/chats_tab_icon"

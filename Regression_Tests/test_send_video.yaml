@@ -1,0 +1,89 @@
+appId: "org.consensio.whisper"
+name: send_video
+---
+# שלח סרטון
+
+#---------------------------if-----------------------------
+- runFlow: # אם המסך נכבה
+    when:
+      visible:
+        id: "com.android.systemui:id/lock_icon_container"
+    commands:
+        - runFlow: if_screen_off.yaml
+- runFlow: # אם חלון התראות מוצג מעל
+    when:
+      visible:
+            text: "Bluetooth"
+    commands:
+        - runFlow: if_notification_center.yaml
+- runFlow: # אם 3 כפתורי ניווט
+    when:
+      visible:
+        id: "com.android.systemui:id/recent_apps"
+    commands:
+        - runFlow: if_navigation_to_gesture.yaml
+- launchApp
+- runFlow: # אם סיגנל לא מחובר לחשבון
+    when:
+      visible:
+        id: "org.consensio.whisper:id/welcome_transfer_or_restore"
+    commands:
+        - runFlow: test_log_in_account_PIN_code.yaml
+        - launchApp
+- runFlow: # אם סיגנל נעול עם קוד
+    when:
+      visible:
+        id: "com.android.systemui:id/lockPassword"
+    commands:
+        - runFlow: if_signal_screen_lock.yaml
+- runFlow: # אם הממשק לא באנגלית
+    when:
+      notVisible: "Chats"
+    commands:
+        - runFlow: if_gui_not_english.yaml
+        - launchApp
+#--------------------------------------------------------------
+- tapOn:
+    id: fab
+- inputText: ${CONTACT_NUMBER}
+- tapOn:
+    id: name
+- runFlow:
+    when:
+      visible:
+        id: "org.consensio.whisper:id/message_request_question"
+    commands:
+        - tapOn: "Accept"
+#---------------------------if-----------------------------
+- runFlow: # אם יש הודעה קולית שלא נשלחה
+    when:
+      visible:
+        id: "org.consensio.whisper:id/voice_note_draft_delete"
+    commands:
+        - runFlow: if_voice_note.yaml
+- runFlow: # אם אין כפתור אימוגים 
+    when:
+      notVisible:
+        id: "org.consensio.whisper:id/emoji_toggle"
+    commands:
+        - runFlow: if_no_emoji_button.yaml
+        - launchApp
+        - tapOn:
+            id: fab
+        - inputText: ${CONTACT_NUMBER}
+        - tapOn:
+            id: name
+        - runFlow:
+            when:
+                visible:
+                    id: "org.consensio.whisper:id/message_request_question"
+            commands:
+                - tapOn: "Accept"
+#--------------------------------------------------------------
+- tapOn:
+    id: quick_camera_toggle
+- longPressOn: 
+    id: camera_capture_button
+- tapOn:
+    id: send
+- assertVisible: "Delivered"

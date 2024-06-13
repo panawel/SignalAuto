@@ -1,0 +1,32 @@
+appId: "org.consensio.whisper"
+tags:
+    - DoNotRun
+---
+
+# מחליף ניווט למחוות החלקה ללא כפתורים
+
+# - runFlow:
+#     when:
+#       visible:
+#         id: "com.android.systemui:id/recent_apps"
+#     commands:
+#         - runFlow: if_navigation_to_gesture.yaml
+
+
+- launchApp: "com.android.settings"
+- tapOn:
+    id: "com.android.settings:id/search_action_bar_title"
+- inputText: "ges"
+- assertVisible: "Gestures"
+- tapOn: "Gestures"
+- tapOn: "Gestures"
+- assertVisible: "Quickly open camera"
+- assertVisible: "System navigation"
+- tapOn: "3-button navigation"
+- tapOn: "Gesture navigation"
+- assertNotVisible:
+    id: "com.android.systemui:id/recent_apps"
+- assertNotVisible:
+    id: "com.android.systemui:id/home"
+- assertNotVisible:
+    id: "com.android.systemui:id/back"

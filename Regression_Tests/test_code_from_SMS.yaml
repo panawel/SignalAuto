@@ -1,0 +1,37 @@
+appId: "org.consensio.whisper"
+tags:
+    - DoNotRun
+name: Sms_Code_Loop
+---
+
+# לופ התחברות אם הקוד לא מתקבל
+
+#-------------------------run Only When Failed to login by SMS code-------------------------------
+- swipe:
+    start: 48%,1%
+    end: 48%,45%
+    duration: 120
+- runFlow:
+    when:
+        visible:
+            id: "android:id/big_text"
+    commands:
+        - copyTextFrom:
+            id: "android:id/big_text"
+- runFlow:
+    when:
+        visible:
+            id: "android:id/text"
+    commands:
+        - copyTextFrom:
+            id: "android:id/text"
+- swipe:
+    start: 49%,91%
+    end: 46%,12%
+    duration: 120
+- inputText: "${maestro.copiedText.slice(22, 28)}"
+- extendedWaitUntil:
+    notVisible: 
+        id: "org.consensio.whisper:id/progress"
+    timeout: 120000
+#---------------------------------------------------------------------------------------------------

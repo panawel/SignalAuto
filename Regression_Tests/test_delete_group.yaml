@@ -1,0 +1,82 @@
+appId: "org.consensio.whisper"
+name: delete_group
+env:
+    name: delete_group
+---
+# מחק את הקבוצה
+
+#---------------------------if-----------------------------
+- runFlow: # אם המסך נכבה
+    when:
+      visible:
+        id: "com.android.systemui:id/lock_icon_container"
+    commands:
+        - runFlow: if_screen_off.yaml
+- runFlow: # אם חלון התראות מוצג מעל
+    when:
+      visible:
+            text: "Bluetooth"
+    commands:
+        - runFlow: if_notification_center.yaml
+- runFlow: # אם 3 כפתורי ניווט
+    when:
+      visible:
+        id: "com.android.systemui:id/recent_apps"
+    commands:
+        - runFlow: if_navigation_to_gesture.yaml
+- launchApp
+- runFlow: # אם סיגנל לא מחובר לחשבון
+    when:
+      visible:
+        id: "org.consensio.whisper:id/welcome_transfer_or_restore"
+    commands:
+        - runFlow: test_log_in_account_PIN_code.yaml
+        - launchApp
+- runFlow: # אם סיגנל נעול עם קוד
+    when:
+      visible:
+        id: "com.android.systemui:id/lockPassword"
+    commands:
+        - runFlow: if_signal_screen_lock.yaml
+- runFlow: # אם הממשק לא באנגלית
+    when:
+      notVisible: "Chats"
+    commands:
+        - runFlow: if_gui_not_english.yaml
+        - launchApp
+#--------------------------------------------------------------
+- tapOn:
+    id: fab
+- tapOn:
+    id: invite_image
+- inputText: ${CONTACT_NUMBER}
+- tapOn:
+    id: name
+- tapOn:
+    id: next
+- tapOn:
+    id: name
+- inputText: ${name}
+- tapOn:
+    id: "org.consensio.whisper:id/progress_indicator"
+- runFlow:
+    when:
+      visible:
+        id: "android:id/button1"
+    commands:
+        - tapOn:
+            id: "android:id/button1"
+- runFlow:
+    when:
+      visible:
+        id: "org.consensio.whisper:id/group_link_enable_and_share_title"
+    commands:
+        - back
+- launchApp            
+- longPressOn: ${name}
+- tapOn:
+    id: "org.consensio.whisper:id/signal_context_menu_item_title"
+    index: 5
+- tapOn:
+    id: "android:id/button1"
+- assertNotVisible: ${name}
